@@ -3,9 +3,9 @@ A prototype for news acquisition methods combining RSS and LLM
 
 ## What is this
 Redesigned a personal RSS news link collection distribution program as an international version.
-- `trgr_post.py`: Symbolic translation system (basic version)
-- `trgr_post_with_ai.py`: Gemini 2.0 Flash batch translation (API efficiency version)
-- `prototype-rss-news.py`: **RSS + Gemma 3 1B** international version proof of concept
+- [trgr_post.py](https://github.com/trgr-karasutoragara/daily-news-for-digital-dignity/blob/main/trgr_post.py): Symbolic translation system (basic version)
+- [trgr_post_with_ai.py](https://github.com/trgr-karasutoragara/daily-news-for-digital-dignity/blob/main/trgr_post_with_ai.py): Gemini 2.0 Flash batch translation (API efficiency version)
+- [prototype-rss-news.py](https://github.com/trgr-karasutoragara/daily-news-for-digital-dignity/blob/main/g/prototype-rss-news.py): **RSS + Gemma 3 1B** international version proof of concept. [Sample is available here](https://github.com/trgr-karasutoragara/daily-news-for-digital-dignity/tree/main/g).
 
 There are three types as above.
 
