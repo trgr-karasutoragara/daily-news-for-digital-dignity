@@ -43,8 +43,11 @@ Tested and confirmed working on Chromebook and Ubuntu (as of July 16, 2025). Bey
 
 ## Quick Start
 
-English version: `en-sypm.py`
-Japanese version: `jp-sypm.py`
+**English version:** [en-sypm.py](https://github.com/trgr-karasutoragara/daily-news-for-digital-dignity/blob/main/symp/en-sypm.py)
+
+**Japanese version:** [jp-sypm.py](https://github.com/trgr-karasutoragara/daily-news-for-digital-dignity/blob/main/symp/jp-sypm.py)
+
+<br>
 
 1. **Chromebook**: Enable Linux development environment
 2. **Ubuntu/Chromebook**: Run `en-sypm.py` or `jp-sypm.py` from terminal in any folder
