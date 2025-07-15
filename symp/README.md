@@ -71,7 +71,7 @@ Japanese version: `jp-sypm.py`
 
 **A: Because it's a contribution to humanity.**
 
-As I published in "Future AI x Dignity: A practical framework for implementing ethics in elderly tech support through AI integration," I am working on ensuring that my mother can age with peace of mind, and that her freedom and dignity are protected.
+As I published in "[Future AI x Dignity: A practical framework for implementing ethics in elderly tech support through AI integration](https://github.com/trgr-karasutoragara/trgr-karasutoragara.github.io)," I am working on ensuring that my mother can age with peace of mind, and that her freedom and dignity are protected.
 
 Is it enough for only my own family's freedom and dignity to be protected? Even if it's just a prototype, when I design tools, by making them public under the MIT License, they might be useful to others in the fields of elderly welfare and information literacy.
 
