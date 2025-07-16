@@ -10,7 +10,7 @@ Redesigned a personal RSS news link collection distribution program as an intern
 - [prototype-rss-news.py](https://github.com/trgr-karasutoragara/daily-news-for-digital-dignity/blob/main/g/prototype-rss-news.py): **RSS + Gemma 3 1B** international version proof of concept. [Sample is available here](https://github.com/trgr-karasutoragara/daily-news-for-digital-dignity/tree/main/g).
 - [prototype-rss-news-v2.py](https://github.com/trgr-karasutoragara/daily-news-for-digital-dignity/blob/main/g-v2/prototype-rss-news-v2.py): RSS + Qwen2.5VL 7B Classification with Reasoning. [Sample is available here](https://github.com/trgr-karasutoragara/daily-news-for-digital-dignity/tree/main/g-v2).
 
-There are three types as above.
+There are four types as above.
 
 <br>
 
