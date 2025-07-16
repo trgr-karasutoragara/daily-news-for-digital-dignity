@@ -53,6 +53,7 @@ Filtering was implemented in [prototype-rss-news-v3.py](https://github.com/trgr-
 
 Therefore, a new script, [prototype-rss-news-v4.py](https://github.com/trgr-karasutoragara/daily-news-for-digital-dignity/blob/main/g-4v/prototype-rss-news-v4.py), was created focusing solely on RSS retrieval.
 
+<br>
 
 ## **Project Philosophy**
 Technology should serve human dignity, not replace it.
