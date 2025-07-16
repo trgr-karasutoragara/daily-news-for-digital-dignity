@@ -8,6 +8,7 @@ Redesigned a personal RSS news link collection distribution program as an intern
 - [trgr_post.py](https://github.com/trgr-karasutoragara/daily-news-for-digital-dignity/blob/main/trgr_post.py): Symbolic translation system (basic version)
 - [trgr_post_with_ai.py](https://github.com/trgr-karasutoragara/daily-news-for-digital-dignity/blob/main/trgr_post_with_ai.py): Gemini 2.0 Flash batch translation (API efficiency version)
 - [prototype-rss-news.py](https://github.com/trgr-karasutoragara/daily-news-for-digital-dignity/blob/main/g/prototype-rss-news.py): **RSS + Gemma 3 1B** international version proof of concept. [Sample is available here](https://github.com/trgr-karasutoragara/daily-news-for-digital-dignity/tree/main/g).
+- [prototype-rss-news-v2.py](https://github.com/trgr-karasutoragara/daily-news-for-digital-dignity/blob/main/g-v2/prototype-rss-news-v2.py): RSS + Qwen2.5VL 7B Classification with Reasoning. [Sample is available here](https://github.com/trgr-karasutoragara/daily-news-for-digital-dignity/tree/main/g-v2).
 
 There are three types as above.
 
@@ -26,6 +27,22 @@ However,
 500GB HDD storage
 ```
 With the above environment, there are open-source options. Even with old computers, there are things that can be done.
+
+<br>
+
+### Update (added July 17, 2025):
+I also wrote a program that uses [Qwen2.5VL 7B to generate classifications and their reasoning](https://github.com/trgr-karasutoragara/daily-news-for-digital-dignity/blob/main/g-v2/prototype-rss-news-v2.py). It runs in the environment shown below. For the model, I chose one different from the ones used in browser- or app-based services like ChatGPT or Gemini 2.5 Pro, as this is in preparation for news analysis. You can change the model to any one you like from the official site: https://ollama.com/.
+
+<br>
+
+```
+CPU: AMD Ryzen 5 6600H
+Cores: 12
+Memory: 32 GB
+GPU: Radeon 680M (integrated)
+1TB HDD storage
+```
+
 
 <br>
 
