@@ -1,0 +1,78 @@
+note:
+The following is the output displayed when the script is executed on Ubuntu.
+Replace Python Virtual Environment with the name of your Python virtual environment,
+and user-name@ubuntu-name with your PC environment.
+
+
+
+###
+
+
+
+(Python Virtual Environment) user-name@ubuntu-name:~$ python3 prototype-rss-news-v2.py
+=== prototype-rss-news (Qwen2.5VL Edition) ===
+Ollama: Not available
+Model: qwen2.5vl:7b
+Output Directory: /home/k/Dropbox/rss-news-results/
+Features: AI Classification with Reasoning (English)
+
+2025-07-17 01:15:11,764 - INFO - prototype-rss-news started (Qwen2.5VL version)
+2025-07-17 01:15:11,770 - INFO - RSS collection started
+2025-07-17 01:15:11,770 - INFO - Fetching: NHK NEWS WEB (Japan)
+2025-07-17 01:15:12,913 - INFO - Fetching: NHK Culture (Japan)
+2025-07-17 01:15:14,011 - INFO - Fetching: NHK International (Japan)
+2025-07-17 01:15:15,165 - INFO - Fetching: China Daily (China)
+2025-07-17 01:15:17,468 - INFO - Fetching: South China Morning Post (Hong Kong)
+2025-07-17 01:15:18,891 - INFO - Fetching: CGTN (China)
+2025-07-17 01:15:19,380 - WARNING - RSS parse warning CGTN: <unknown>:6:0: syntax error
+2025-07-17 01:15:20,380 - INFO - Fetching: Channel NewsAsia (Singapore)
+2025-07-17 01:15:21,503 - INFO - Fetching: Bangkok Post (Thailand)
+2025-07-17 01:15:22,948 - INFO - Fetching: ABC Australia (Australia)
+2025-07-17 01:15:24,403 - INFO - Fetching: SBS Australia (Australia)
+2025-07-17 01:15:26,445 - INFO - Fetching: BBC World (Europe)
+2025-07-17 01:15:27,642 - INFO - Fetching: BBC Education (Europe)
+2025-07-17 01:15:29,286 - INFO - Fetching: France24 (Europe)
+2025-07-17 01:15:29,553 - INFO -   Saved (1): Chaos on the Israel-Syrian border...
+2025-07-17 01:15:30,553 - INFO - Fetching: Deutsche Welle (Europe)
+2025-07-17 01:15:33,345 - INFO - Fetching: DR Denmark (Europe)
+2025-07-17 01:15:34,845 - INFO - Fetching: NPR (Americas)
+2025-07-17 01:15:34,995 - INFO -   Saved (2): As Republicans call for transparency into Epstein ...
+2025-07-17 01:15:35,996 - INFO - Fetching: Buenos Aires Herald (Americas)
+2025-07-17 01:15:39,765 - INFO - Fetching: Haaretz (Middle East)
+2025-07-17 01:15:40,205 - ERROR - RSS fetch error Haaretz: 404 Client Error: Not Found for url: https://www.haaretz.com/srv/haaretz-latest.rss
+2025-07-17 01:15:40,205 - INFO - Fetching: Al Jazeera English (Middle East)
+2025-07-17 01:15:42,715 - INFO - Fetching: Africanews (Africa)
+2025-07-17 01:15:43,314 - INFO -   Saved (3): Mali's former PM Moussa Mara called in for second ...
+2025-07-17 01:15:43,314 - INFO -   Saved (4): Turkish democracy under pressure: Erdogan's top ri...
+2025-07-17 01:15:44,315 - INFO - Fetching: AllAfrica (Africa)
+2025-07-17 01:15:46,085 - INFO - Fetching: News24 South Africa (Africa)
+2025-07-17 01:15:47,957 - INFO -   Saved (5): News24 | Child sex accounts boast of ‘suicides’; C...
+2025-07-17 01:15:48,957 - INFO - Fetching: BBC Africa (Africa)
+2025-07-17 01:15:50,579 - INFO - Fetching: UN News (International)
+2025-07-17 01:15:51,917 - INFO - Fetching: NASA Earth Observatory (Environment)
+2025-07-17 01:15:54,094 - INFO - Fetching: Science Daily (Science)
+2025-07-17 01:15:55,951 - INFO - Fetching: Nature Climate (Environment)
+2025-07-17 01:15:57,360 - INFO - Fetching: eSchool News (Education)
+2025-07-17 01:15:58,741 - WARNING - RSS parse warning eSchool News: <unknown>:3:0: XML or text declaration not at start of entity
+2025-07-17 01:15:59,741 - INFO - Fetching: Smithsonian Insider (Culture)
+2025-07-17 01:16:24,179 - INFO - RSS collection completed: 5 items
+2025-07-17 01:16:24,180 - INFO - Article classification started with qwen2.5vl:7b
+2025-07-17 01:16:24,180 - INFO - Classifying (1/5): Chaos on the Israel-Syrian border...
+2025-07-17 01:16:35,619 - INFO -   Classified: Politics (Importance:3, Scope:2)
+2025-07-17 01:16:37,620 - INFO - Classifying (2/5): As Republicans call for transparency int...
+2025-07-17 01:16:47,392 - INFO -   Classified: Politics (Importance:3, Scope:2)
+2025-07-17 01:16:49,392 - INFO - Classifying (3/5): Mali's former PM Moussa Mara called in f...
+2025-07-17 01:16:58,927 - INFO -   Classified: Politics (Importance:3, Scope:2)
+2025-07-17 01:17:00,927 - INFO - Classifying (4/5): Turkish democracy under pressure: Erdoga...
+2025-07-17 01:17:10,689 - INFO -   Classified: Politics (Importance:3, Scope:2)
+2025-07-17 01:17:12,689 - INFO - Classifying (5/5): News24 | Child sex accounts boast of ‘su...
+2025-07-17 01:17:22,352 - INFO -   Classified: Other (Importance:1, Scope:1)
+2025-07-17 01:17:24,366 - INFO - Classification completed: 5 items
+2025-07-17 01:17:24,366 - INFO - Final report generation started
+2025-07-17 01:17:24,367 - INFO - Final report generated: /home/k/Dropbox/rss-news-results/world_news_report_20250717_0117.md
+2025-07-17 01:17:24,367 - INFO - Report saved to: /home/k/Dropbox/rss-news-results/world_news_report_20250717_0117.md
+2025-07-17 01:17:24,367 - INFO - prototype-rss-news completed successfully!
+Collected: 5 articles
+Processed: 5 articles
+Report: /home/k/Dropbox/rss-news-results/world_news_report_20250717_0117.md
+(Python Virtual Environment) user-name@ubuntu-name:~$
