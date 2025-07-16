@@ -10,7 +10,6 @@ Redesigned a personal RSS news link collection distribution program as an intern
 - [prototype-rss-news.py](https://github.com/trgr-karasutoragara/daily-news-for-digital-dignity/blob/main/g/prototype-rss-news.py): **RSS + Gemma 3 1B** international version proof of concept. [Sample is available here](https://github.com/trgr-karasutoragara/daily-news-for-digital-dignity/tree/main/g).
 - [prototype-rss-news-v2.py](https://github.com/trgr-karasutoragara/daily-news-for-digital-dignity/blob/main/g-v2/prototype-rss-news-v2.py): **RSS + Qwen2.5VL 7B** Classification with Reasoning. [Sample is available here](https://github.com/trgr-karasutoragara/daily-news-for-digital-dignity/tree/main/g-v2).
 
-There are four types as above.
 
 <br>
 
@@ -30,7 +29,7 @@ With the above environment, there are open-source options. Even with old compute
 
 <br>
 
-### Update (added July 17, 2025):
+### Addendum – 2025/07/17:
 I also wrote a program that uses [Qwen2.5VL 7B to generate classifications and their reasoning](https://github.com/trgr-karasutoragara/daily-news-for-digital-dignity/blob/main/g-v2/prototype-rss-news-v2.py). It runs in the environment shown below. For the model, I chose one different from the ones used in browser- or app-based services like ChatGPT or Gemini 2.5 Pro, as this is in preparation for news analysis. You can change the model to any one you like from the official site: https://ollama.com/.
 
 <br>
@@ -45,6 +44,15 @@ GPU: Radeon 680M (integrated)
 
 
 <br>
+
+### Addendum 2 – 2025/07/17
+
+In [prototype-rss-news-v2.py](https://github.com/trgr-karasutoragara/daily-news-for-digital-dignity/blob/main/g-v2/prototype-rss-news-v2.py), an issue was found where outdated information was being retrieved from official RSS feeds.
+
+Filtering was implemented in [prototype-rss-news-v3.py](https://github.com/trgr-karasutoragara/daily-news-for-digital-dignity/blob/main/g-v3/prototype-rss-news-v3.py), but it was incomplete.
+
+Therefore, a new script, [prototype-rss-news-v4.py](https://github.com/trgr-karasutoragara/daily-news-for-digital-dignity/blob/main/g-4v/prototype-rss-news-v4.py), was created focusing solely on RSS retrieval.
+
 
 ## **Project Philosophy**
 Technology should serve human dignity, not replace it.
