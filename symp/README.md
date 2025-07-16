@@ -32,7 +32,7 @@ https://youtu.be/uxX-iD2nKLk
 
 ## Elderly Welfare and Information Literacy Education
 
-Tested and confirmed working on Chromebook and Ubuntu (as of July 16, 2025). Beyond voice input, this tool enables simple AI prompt generation and local memo management through mouse clicks.
+Tested and confirmed working on Chromebook and Ubuntu (as of July 16, 2025). This tool enables simple AI prompt generation and local memo management through mouse clicks.
 
 1. **Mouse-friendly design**: Elderly users who prefer voice operation over keyboard input can still utilize this tool effectively through mouse operations
 2. **Reduced AI verification burden**: Multiple prompt generation reduces the effort required for AI confirmation, making verification more accessible
