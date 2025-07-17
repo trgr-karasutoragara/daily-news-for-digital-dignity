@@ -4,6 +4,13 @@ Enhanced RSS News Collection - English Sources Only
 Design: Global coverage through English-language sources
 Benefits: Better duplicate detection, content analysis, date parsing
 
+TECHNICAL LIMITATIONS:
+- Chinese media outlets: 6 consecutive failures due to IP blocking, geographic 
+  restrictions, or contractual constraints
+- This is a volunteer-driven prototype (MIT License) - users can modify freely
+- VPN usage avoided to prevent server burden in specific regions
+- Some operational errors remain but published for transparency
+
 Features:
 - English-only sources for consistent processing
 - newspaper3k integration for advanced filtering (internal use only)
@@ -40,7 +47,7 @@ except ImportError:
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-class EnhancedEnglishRSSCollection:
+class RSSNewsPrototype:
     def __init__(self, news_max_hours=48, slow_max_days=7, max_workers=12, target_timeout=8):
         self.output_dir = os.path.expanduser("~/Dropbox/rss-news-results/")
         self.news_max_hours = news_max_hours
@@ -71,14 +78,13 @@ class EnhancedEnglishRSSCollection:
             # Americas
             ("NPR World News", "https://feeds.npr.org/1001/rss.xml", "North America", "news"),
             ("CBC World News", "https://rss.cbc.ca/lineup/world.xml", "North America", "news"),
-            ("Reuters World", "https://feeds.reuters.com/reuters/worldNews", "Americas", "news"),
             ("Buenos Aires Herald", "https://buenosairesherald.com/rss", "Latin America", "news"),
             
             # Africa (English sources)
             ("BBC Africa", "http://feeds.bbci.co.uk/news/world/africa/rss.xml", "Africa", "news"),
             ("AllAfrica", "https://allafrica.com/tools/headlines/rdf/latest/headlines.rdf", "Africa", "news"),
             ("Mail & Guardian", "https://mg.co.za/rss/", "Africa", "news"),
-            ("Daily Nation Kenya", "https://nation.africa/kenya/news/rss", "Africa", "news"),
+            ("Africanews", "https://www.africanews.com/feed/rss", "Africa", "news"),
             
             # Middle East (English sources)
             ("Al Jazeera English", "https://www.aljazeera.com/xml/rss/all.xml", "Middle East", "news"),
@@ -87,7 +93,6 @@ class EnhancedEnglishRSSCollection:
             
             # International Organizations (slower update)
             ("UN News", "https://news.un.org/feed/subscribe/en/news/all/rss.xml", "International", "slow"),
-            ("World Bank News", "https://www.worldbank.org/en/news/all.xml", "International", "slow"),
             
             # Environment & Science (slower update)
             ("Carbon Brief", "https://www.carbonbrief.org/rss", "Environment", "slow"),
@@ -184,12 +189,18 @@ class EnhancedEnglishRSSCollection:
             'International': 25,
             'Europe': 30,
             'North America': 25,
-            'Asia Pacific': 25,
-            'Africa': 20,
+            'Africa': 25,  # Increased due to 4 sources
             'Middle East': 20,
             'Latin America': 15,
             'Environment': 15,
             'Science': 15,
+            'China': 20,
+            'Hong Kong': 20,
+            'Japan': 20,
+            'Singapore': 20,
+            'Australia': 20,
+            'South Asia': 20,
+            'Southeast Asia': 20,
         }
         
         # Sort articles within each region by publication date (newest first)
@@ -323,9 +334,9 @@ class EnhancedEnglishRSSCollection:
             logger.error(f"✗ General error {source_name} in {fetch_time:.2f}s: {e}")
             return []
 
-    def collect_all_rss_feeds_enhanced(self):
+    def collect_all_rss_feeds(self):
         """Enhanced parallel RSS collection"""
-        logger.info(f"Starting enhanced English RSS collection (workers: {self.max_workers})")
+        logger.info("Starting RSS collection (workers: {self.max_workers})")
         logger.info(f"Sources: {len(self.rss_sources)} English-language outlets")
         start_time = time.time()
         
@@ -376,7 +387,7 @@ class EnhancedEnglishRSSCollection:
         )
         
         end_time = time.time()
-        logger.info(f"Enhanced collection completed: {raw_count} → {len(all_articles)} articles from {successful_sources}/{len(self.rss_sources)} sources in {end_time - start_time:.2f} seconds")
+        logger.info(f"Collection completed: {raw_count} → {len(all_articles)} articles from {successful_sources}/{len(self.rss_sources)} sources in {end_time - start_time:.2f} seconds")
         
         return all_articles, successful_sources
 
@@ -403,7 +414,7 @@ class EnhancedEnglishRSSCollection:
             if article.get('content_quality') == 'enhanced':
                 enhanced_count += 1
         
-        markdown = f"""# Enhanced Global News Collection (English Sources)
+        markdown = f"""# RSS News Prototype
 
 **Generated**: {report_date}  
 **Total Articles**: {len(articles)}  
@@ -475,11 +486,11 @@ class EnhancedEnglishRSSCollection:
 
     def run(self):
         """Main execution method"""
-        logger.info("Enhanced English RSS News Collection started")
+        logger.info("RSS News Prototype started")
         
         try:
             # 1. Collect RSS feeds
-            articles, successful_sources = self.collect_all_rss_feeds_enhanced()
+            articles, successful_sources = self.collect_all_rss_feeds()
             
             if not articles:
                 logger.error("No articles collected")
@@ -488,7 +499,7 @@ class EnhancedEnglishRSSCollection:
             # 2. Generate enhanced markdown report
             report_file = self.generate_enhanced_markdown_report(articles, successful_sources)
             
-            logger.info("Enhanced English RSS News Collection completed successfully!")
+            logger.info("RSS News Prototype completed successfully!")
             return {
                 'articles_count': len(articles),
                 'successful_sources': successful_sources,
@@ -504,7 +515,7 @@ class EnhancedEnglishRSSCollection:
 
 def main():
     """Main function"""
-    print("=== Enhanced English RSS News Collection ===")
+    print("=== RSS News Prototype ===")
     print("Design: Global coverage through English-language sources")
     print("Processing: Advanced filtering and duplicate detection")
     print("Output: Copyright-safe (titles, dates, URLs only)")
@@ -521,7 +532,7 @@ def main():
     print()
     
     # Configuration
-    collector = EnhancedEnglishRSSCollection(
+    collector = RSSNewsPrototype(
         news_max_hours=48,    # News sources: 48 hours
         slow_max_days=7,      # Specialized sources: 7 days
         max_workers=12,       # Parallel processing
