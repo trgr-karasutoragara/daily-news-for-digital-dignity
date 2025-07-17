@@ -1,3 +1,14 @@
+# Status: Superseded
+This project has an enhanced version available. We recommend checking out the improved implementation for better performance and additional features.
+
+[Read more →](https://github.com/trgr-karasutoragara/daily-news-for-digital-dignity/tree/main/g-5v)
+
+<br>
+
+---
+
+<br>
+
 # prototype-rss-news.py / trgr_post.py / trgr_post_with_ai.py
 A prototype for news acquisition methods combining RSS and LLM
 
