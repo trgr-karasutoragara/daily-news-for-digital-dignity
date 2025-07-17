@@ -10,7 +10,7 @@ and user-name@ubuntu-name with your PC environment.
 
 (Python Virtual Environment) user-name@ubuntu-name:~$:~$ python3 prototype-rss-news-v5.py
 Optional: pip install newspaper3k for enhanced content analysis
-=== Enhanced English RSS News Collection ===
+=== RSS News Prototype ===
 Design: Global coverage through English-language sources
 Processing: Advanced filtering and duplicate detection
 Output: Copyright-safe (titles, dates, URLs only)
@@ -18,94 +18,88 @@ Output: Copyright-safe (titles, dates, URLs only)
 ℹ  Install newspaper3k for enhanced filtering: pip install newspaper3k
   • Basic duplicate detection enabled
 
-2025-07-18 02:29:40,073 - INFO - Enhanced English RSS News Collection started
-2025-07-18 02:29:40,073 - INFO - Starting enhanced English RSS collection (workers: 12)
-2025-07-18 02:29:40,074 - INFO - Sources: 31 English-language outlets
-2025-07-18 02:29:40,216 - INFO - ✓ Channel NewsAsia: 20 articles in 0.14s
-2025-07-18 02:29:40,219 - INFO - Progress: 3% (1/31) - Raw articles: 20
-2025-07-18 02:29:40,260 - INFO - ✓ NHK World Japan: 41 articles in 0.19s
-2025-07-18 02:29:40,262 - INFO - Progress: 6% (2/31) - Raw articles: 61
-2025-07-18 02:29:40,272 - INFO - ✓ Times of India: 20 articles in 0.19s
-2025-07-18 02:29:40,273 - INFO - Progress: 10% (3/31) - Raw articles: 81
-2025-07-18 02:29:40,306 - INFO - ✓ BBC World News: 27 articles in 0.22s
-2025-07-18 02:29:40,307 - INFO - Progress: 13% (4/31) - Raw articles: 108
-2025-07-18 02:29:40,344 - ERROR - ✗ Request error Reuters World in 0.04s: HTTPSConnectionPool(host='feeds.reuters.com', port=443): Max retries exceeded with url: /reuters/worldNews (Caused by NameResolutionError("<urllib3.connection.HTTPSConnection object at 0x7ba46a9589e0>: Failed to resolve 'feeds.reuters.com' ([Errno -2] Name or service not known)"))
-2025-07-18 02:29:40,344 - INFO - Progress: 16% (5/31) - Raw articles: 108
-2025-07-18 02:29:40,423 - INFO - ✓ NPR World News: 10 articles in 0.16s
-2025-07-18 02:29:40,434 - INFO - Progress: 19% (6/31) - Raw articles: 118
-2025-07-18 02:29:40,506 - INFO - ✓ ABC News Australia: 21 articles in 0.43s
-2025-07-18 02:29:40,508 - INFO - Progress: 23% (7/31) - Raw articles: 139
-2025-07-18 02:29:40,513 - INFO - ✓ Straits Times Singapore: 50 articles in 0.43s
-2025-07-18 02:29:40,515 - INFO - Progress: 26% (8/31) - Raw articles: 189
-2025-07-18 02:29:40,527 - INFO - ✓ CBC World News: 15 articles in 0.25s
-2025-07-18 02:29:40,531 - INFO - ✓ Bangkok Post: 0 articles in 0.45s
-2025-07-18 02:29:40,531 - INFO - Progress: 29% (9/31) - Raw articles: 204
-2025-07-18 02:29:40,532 - INFO - Progress: 32% (10/31) - Raw articles: 204
-2025-07-18 02:29:40,577 - INFO - ✓ South China Morning Post: 50 articles in 0.50s
-2025-07-18 02:29:40,577 - INFO - Progress: 35% (11/31) - Raw articles: 254
-2025-07-18 02:29:40,671 - ERROR - ✗ Request error Daily Nation Kenya in 0.14s: 403 Client Error: Forbidden for url: https://nation.africa/kenya/news/rss
-2025-07-18 02:29:40,671 - INFO - Progress: 39% (12/31) - Raw articles: 254
-2025-07-18 02:29:40,701 - INFO - ✓ Al Jazeera English: 25 articles in 0.17s
-2025-07-18 02:29:40,702 - INFO - Progress: 42% (13/31) - Raw articles: 279
-2025-07-18 02:29:40,800 - INFO - ✓ Deutsche Welle English: 33 articles in 0.72s
-2025-07-18 02:29:40,801 - INFO - Progress: 45% (14/31) - Raw articles: 312
-2025-07-18 02:29:40,894 - INFO - ✓ Jerusalem Post: 0 articles in 0.32s
-2025-07-18 02:29:40,895 - INFO - Progress: 48% (15/31) - Raw articles: 312
-2025-07-18 02:29:40,928 - INFO - ✓ Arab News: 10 articles in 0.26s
-2025-07-18 02:29:40,929 - INFO - Progress: 52% (16/31) - Raw articles: 322
-2025-07-18 02:29:40,947 - INFO - ✓ Euronews English: 41 articles in 0.73s
-2025-07-18 02:29:40,947 - INFO - Progress: 55% (17/31) - Raw articles: 363
-2025-07-18 02:29:41,032 - INFO - ✓ UN News: 30 articles in 0.33s
-2025-07-18 02:29:41,033 - INFO - Progress: 58% (18/31) - Raw articles: 393
-2025-07-18 02:29:41,102 - INFO - ✓ France24 English: 24 articles in 1.02s
-2025-07-18 02:29:41,103 - INFO - Progress: 61% (19/31) - Raw articles: 417
-2025-07-18 02:29:41,196 - WARNING - No entries found in World Bank News
-2025-07-18 02:29:41,197 - INFO - Progress: 65% (20/31) - Raw articles: 417
-2025-07-18 02:29:41,213 - INFO - ✓ BBC Africa: 9 articles in 0.78s
-2025-07-18 02:29:41,213 - INFO - Progress: 68% (21/31) - Raw articles: 426
-2025-07-18 02:29:41,326 - INFO - ✓ China Daily English: 0 articles in 1.25s
-2025-07-18 02:29:41,326 - INFO - Progress: 71% (22/31) - Raw articles: 426
-2025-07-18 02:29:41,458 - INFO - ✓ SBS News Australia: 19 articles in 1.38s
-2025-07-18 02:29:41,468 - INFO - ✓ AllAfrica: 31 articles in 0.96s
-2025-07-18 02:29:41,468 - INFO - Progress: 74% (23/31) - Raw articles: 445
-2025-07-18 02:29:41,468 - INFO - Progress: 77% (24/31) - Raw articles: 476
-2025-07-18 02:29:41,582 - INFO - ✓ Nature Climate: 1 articles in 0.48s
-2025-07-18 02:29:41,582 - INFO - Progress: 81% (25/31) - Raw articles: 477
-2025-07-18 02:29:41,757 - INFO - ✓ Carbon Brief: 4 articles in 0.86s
-2025-07-18 02:29:41,758 - INFO - Progress: 84% (26/31) - Raw articles: 481
-2025-07-18 02:29:41,874 - INFO - ✓ Science Daily: 50 articles in 0.93s
-2025-07-18 02:29:41,874 - INFO - Progress: 87% (27/31) - Raw articles: 531
-2025-07-18 02:29:42,121 - INFO - ✓ NASA Earth Observatory: 7 articles in 1.09s
-2025-07-18 02:29:42,121 - INFO - Progress: 90% (28/31) - Raw articles: 538
-2025-07-18 02:29:42,378 - INFO - ✓ Mail & Guardian: 10 articles in 1.86s
-2025-07-18 02:29:42,378 - INFO - Progress: 94% (29/31) - Raw articles: 548
-2025-07-18 02:29:43,298 - INFO - ✓ Climate Home News: 3 articles in 2.37s
-2025-07-18 02:29:43,298 - INFO - Progress: 97% (30/31) - Raw articles: 551
-2025-07-18 02:29:44,495 - INFO - ✓ Buenos Aires Herald: 9 articles in 4.15s
-2025-07-18 02:29:44,495 - INFO - Progress: 100% (31/31) - Raw articles: 560
-2025-07-18 02:29:44,496 - INFO - Applying enhanced quality filters...
-2025-07-18 02:29:44,502 - INFO - Enhanced deduplication: 560 → 553 articles
-2025-07-18 02:29:44,503 - INFO - Regional balance: Singapore - 20/68 articles (limit: 20)
-2025-07-18 02:29:44,503 - INFO - Regional balance: Japan - 20/41 articles (limit: 20)
-2025-07-18 02:29:44,503 - INFO - Regional balance: South Asia - 20/20 articles (limit: 20)
-2025-07-18 02:29:44,503 - INFO - Regional balance: Europe - 30/124 articles (limit: 30)
-2025-07-18 02:29:44,503 - INFO - Regional balance: North America - 25/25 articles (limit: 25)
-2025-07-18 02:29:44,503 - INFO - Regional balance: Australia - 20/39 articles (limit: 20)
-2025-07-18 02:29:44,503 - INFO - Regional balance: Hong Kong - 20/50 articles (limit: 20)
-2025-07-18 02:29:44,503 - INFO - Regional balance: Middle East - 20/35 articles (limit: 20)
-2025-07-18 02:29:44,503 - INFO - Regional balance: International - 25/30 articles (limit: 25)
-2025-07-18 02:29:44,503 - INFO - Regional balance: Africa - 20/47 articles (limit: 20)
-2025-07-18 02:29:44,503 - INFO - Regional balance: Environment - 15/15 articles (limit: 15)
-2025-07-18 02:29:44,503 - INFO - Regional balance: Science - 15/50 articles (limit: 15)
-2025-07-18 02:29:44,503 - INFO - Regional balance: Latin America - 9/9 articles (limit: 15)
-2025-07-18 02:29:44,503 - INFO - Enhanced collection completed: 560 → 259 articles from 25/31 sources in 4.43 seconds
-2025-07-18 02:29:44,503 - INFO - Generating copyright-safe markdown report for 259 articles
-2025-07-18 02:29:44,505 - INFO - Copyright-safe markdown report saved: /home/k/Dropbox/rss-news-results/rss_news_20250718_0229.md
-2025-07-18 02:29:44,505 - INFO - Enhanced English RSS News Collection completed successfully!
+2025-07-18 03:41:11,679 - INFO - RSS News Prototype started
+2025-07-18 03:41:11,679 - INFO - Starting RSS collection (workers: {self.max_workers})
+2025-07-18 03:41:11,679 - INFO - Sources: 28 English-language outlets
+2025-07-18 03:41:11,823 - INFO - ✓ Channel NewsAsia: 20 articles in 0.14s
+2025-07-18 03:41:11,824 - INFO - Progress: 4% (1/28) - Raw articles: 20
+2025-07-18 03:41:11,999 - INFO - ✓ Times of India: 20 articles in 0.31s
+2025-07-18 03:41:12,003 - INFO - ✓ Straits Times Singapore: 50 articles in 0.32s
+2025-07-18 03:41:12,017 - INFO - ✓ France24 English: 24 articles in 0.33s
+2025-07-18 03:41:12,018 - INFO - Progress: 7% (2/28) - Raw articles: 40
+2025-07-18 03:41:12,025 - INFO - Progress: 11% (3/28) - Raw articles: 90
+2025-07-18 03:41:12,035 - INFO - Progress: 14% (4/28) - Raw articles: 114
+2025-07-18 03:41:12,054 - INFO - ✓ NHK World Japan: 41 articles in 0.37s
+2025-07-18 03:41:12,055 - INFO - Progress: 18% (5/28) - Raw articles: 155
+2025-07-18 03:41:12,063 - INFO - ✓ NPR World News: 10 articles in 0.24s
+2025-07-18 03:41:12,063 - INFO - Progress: 21% (6/28) - Raw articles: 165
+2025-07-18 03:41:12,126 - INFO - ✓ ABC News Australia: 21 articles in 0.44s
+2025-07-18 03:41:12,127 - INFO - Progress: 25% (7/28) - Raw articles: 186
+2025-07-18 03:41:12,178 - INFO - ✓ Bangkok Post: 0 articles in 0.49s
+2025-07-18 03:41:12,179 - INFO - Progress: 29% (8/28) - Raw articles: 186
+2025-07-18 03:41:12,254 - INFO - ✓ BBC World News: 27 articles in 0.57s
+2025-07-18 03:41:12,256 - INFO - Progress: 32% (9/28) - Raw articles: 213
+2025-07-18 03:41:12,273 - INFO - ✓ Euronews English: 41 articles in 0.58s
+2025-07-18 03:41:12,274 - INFO - Progress: 36% (10/28) - Raw articles: 254
+2025-07-18 03:41:12,294 - INFO - ✓ Africanews: 46 articles in 0.17s
+2025-07-18 03:41:12,296 - INFO - Progress: 39% (11/28) - Raw articles: 300
+2025-07-18 03:41:12,308 - INFO - ✓ CBC World News: 15 articles in 0.30s
+2025-07-18 03:41:12,309 - INFO - Progress: 43% (12/28) - Raw articles: 315
+2025-07-18 03:41:12,320 - INFO - ✓ Al Jazeera English: 25 articles in 0.14s
+2025-07-18 03:41:12,321 - INFO - Progress: 46% (13/28) - Raw articles: 340
+2025-07-18 03:41:12,375 - INFO - ✓ South China Morning Post: 50 articles in 0.69s
+2025-07-18 03:41:12,376 - INFO - Progress: 50% (14/28) - Raw articles: 390
+2025-07-18 03:41:12,482 - INFO - ✓ Arab News: 10 articles in 0.21s
+2025-07-18 03:41:12,483 - INFO - Progress: 54% (15/28) - Raw articles: 400
+2025-07-18 03:41:12,564 - INFO - ✓ Jerusalem Post: 0 articles in 0.31s
+2025-07-18 03:41:12,565 - INFO - Progress: 57% (16/28) - Raw articles: 400
+2025-07-18 03:41:12,693 - INFO - ✓ SBS News Australia: 19 articles in 1.01s
+2025-07-18 03:41:12,694 - INFO - Progress: 61% (17/28) - Raw articles: 419
+2025-07-18 03:41:12,715 - INFO - ✓ UN News: 30 articles in 0.42s
+2025-07-18 03:41:12,716 - INFO - Progress: 64% (18/28) - Raw articles: 449
+2025-07-18 03:41:12,764 - INFO - ✓ Deutsche Welle English: 32 articles in 1.07s
+2025-07-18 03:41:12,765 - INFO - Progress: 68% (19/28) - Raw articles: 481
+2025-07-18 03:41:12,808 - INFO - ✓ BBC Africa: 10 articles in 0.79s
+2025-07-18 03:41:12,808 - INFO - Progress: 71% (20/28) - Raw articles: 491
+2025-07-18 03:41:13,085 - INFO - ✓ Carbon Brief: 4 articles in 0.78s
+2025-07-18 03:41:13,085 - INFO - Progress: 75% (21/28) - Raw articles: 495
+2025-07-18 03:41:13,091 - INFO - ✓ Nature Climate: 1 articles in 0.53s
+2025-07-18 03:41:13,091 - INFO - Progress: 79% (22/28) - Raw articles: 496
+2025-07-18 03:41:13,115 - INFO - ✓ AllAfrica: 31 articles in 1.06s
+2025-07-18 03:41:13,115 - INFO - Progress: 82% (23/28) - Raw articles: 527
+2025-07-18 03:41:13,215 - INFO - ✓ Science Daily: 50 articles in 0.84s
+2025-07-18 03:41:13,215 - INFO - Progress: 86% (24/28) - Raw articles: 577
+2025-07-18 03:41:13,522 - INFO - ✓ NASA Earth Observatory: 7 articles in 1.04s
+2025-07-18 03:41:13,522 - INFO - Progress: 89% (25/28) - Raw articles: 584
+2025-07-18 03:41:14,082 - INFO - ✓ Buenos Aires Herald: 8 articles in 2.06s
+2025-07-18 03:41:14,083 - INFO - Progress: 93% (26/28) - Raw articles: 592
+2025-07-18 03:41:14,742 - INFO - ✓ Climate Home News: 4 articles in 2.42s
+2025-07-18 03:41:14,742 - INFO - Progress: 96% (27/28) - Raw articles: 596
+2025-07-18 03:41:14,960 - INFO - ✓ Mail & Guardian: 10 articles in 2.90s
+2025-07-18 03:41:14,960 - INFO - Progress: 100% (28/28) - Raw articles: 606
+2025-07-18 03:41:14,961 - INFO - Applying enhanced quality filters...
+2025-07-18 03:41:14,967 - INFO - Enhanced deduplication: 606 → 597 articles
+2025-07-18 03:41:14,968 - INFO - Regional balance: Singapore - 20/68 articles (limit: 20)
+2025-07-18 03:41:14,968 - INFO - Regional balance: South Asia - 20/20 articles (limit: 20)
+2025-07-18 03:41:14,968 - INFO - Regional balance: Europe - 30/123 articles (limit: 30)
+2025-07-18 03:41:14,968 - INFO - Regional balance: Japan - 20/41 articles (limit: 20)
+2025-07-18 03:41:14,968 - INFO - Regional balance: North America - 25/25 articles (limit: 25)
+2025-07-18 03:41:14,968 - INFO - Regional balance: Australia - 20/39 articles (limit: 20)
+2025-07-18 03:41:14,968 - INFO - Regional balance: Africa - 25/92 articles (limit: 25)
+2025-07-18 03:41:14,968 - INFO - Regional balance: Middle East - 20/35 articles (limit: 20)
+2025-07-18 03:41:14,968 - INFO - Regional balance: Hong Kong - 20/50 articles (limit: 20)
+2025-07-18 03:41:14,968 - INFO - Regional balance: International - 25/30 articles (limit: 25)
+2025-07-18 03:41:14,968 - INFO - Regional balance: Environment - 15/16 articles (limit: 15)
+2025-07-18 03:41:14,968 - INFO - Regional balance: Science - 15/50 articles (limit: 15)
+2025-07-18 03:41:14,968 - INFO - Regional balance: Latin America - 8/8 articles (limit: 15)
+2025-07-18 03:41:14,969 - INFO - Collection completed: 606 → 263 articles from 26/28 sources in 3.29 seconds
+2025-07-18 03:41:14,969 - INFO - Generating copyright-safe markdown report for 263 articles
+2025-07-18 03:41:14,971 - INFO - Copyright-safe markdown report saved: /home/k/Dropbox/rss-news-results/rss_news_20250718_0341.md
+2025-07-18 03:41:14,971 - INFO - RSS News Prototype completed successfully!
 ✓ Success!
-Articles collected: 259
-Successful sources: 25/31 (80.6%)
+Articles collected: 263
+Successful sources: 26/28 (92.9%)
 Enhanced filtering: Basic mode
 Output format: Copyright-safe minimal information
-Report saved: /home/k/Dropbox/rss-news-results/rss_news_20250718_0229.md
+Report saved: /home/k/Dropbox/rss-news-results/rss_news_20250718_0341.md
 (Python Virtual Environment) user-name@ubuntu-name:~$
