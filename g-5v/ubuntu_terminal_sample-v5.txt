@@ -8,7 +8,7 @@ and user-name@ubuntu-name with your PC environment.
 ###
 
 
-(Python Virtual Environment) user-name@ubuntu-name:~$:~$ python3 prototype-rss-news-v5.py
+(Python Virtual Environment) user-name@ubuntu-name:~$ python3 prototype-rss-news-v5.py
 Optional: pip install newspaper3k for enhanced content analysis
 === RSS News Prototype ===
 Design: Global coverage through English-language sources
