@@ -1,3 +1,7 @@
+![MIT](https://img.shields.io/github/license/trgr-karasutoragara/daily-news-for-digital-dignity)
+![Stars](https://img.shields.io/github/stars/trgr-karasutoragara/daily-news-for-digital-dignity?style=social)
+![Last Commit](https://img.shields.io/github/last-commit/trgr-karasutoragara/daily-news-for-digital-dignity)
+
 # Status: Superseded
 This project has an enhanced version available. We recommend checking out the improved implementation for better performance and additional features.
 
