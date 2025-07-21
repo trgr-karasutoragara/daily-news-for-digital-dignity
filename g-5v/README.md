@@ -7,7 +7,7 @@
 - **Volunteer-driven prototype**: This is released under MIT License - users can modify freely
 - **VPN usage**: Intentionally avoided to prevent server burden in specific regions
 - **Operational transparency**: Some operational errors remain but are published for transparency
-- **Language parsing limitations**: Some Japanese headlines may appear due to technical limitations in parsing NHK World Japan feeds. This is not intentional. Since this project is MIT Licensed, users can implement their own filtering if English-only content is required
+- **Language parsing limitations**: Some Japanese headlines may appear due to technical limitations in parsing NHK World Japan feeds. This is not intentional. Since this project is MIT Licensed, users can implement their own filtering if English-only content is required → I created [version 6](https://github.com/trgr-karasutoragara/daily-news-for-digital-dignity/blob/main/g-6v/prototype-rss-news-v6.py), which fixes the NHK World error and adds several additional sources. Please feel free to try it out if you'd like.
 - **License and redistribution**: This project is released under the MIT License. Users are free to modify and redistribute. All original article rights belong to the respective news publishers
 
 
