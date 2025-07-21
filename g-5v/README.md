@@ -1,4 +1,4 @@
-# RSS News Collection: v4 vs v5 Detailed Improvement and Change Analysis
+# RSS News Prototype: v4 vs v5 Detailed Improvement and Change Analysis
 
 ## Technical Limitations and Project Disclaimer
 
