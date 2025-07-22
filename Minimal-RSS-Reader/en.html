@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimal RSS Reader</title>
+    <style>
+        :root {
+            --bg: #f7f7f7;
+            --surface: #ffffff;
+            --text: #222222;
+            --muted: #777777;
+            --accent: #000000;
+            --border: #e0e0e0;
+            --radius: 12px;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", YuGothic, "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 24px 16px;
+        }
+
+        .header {
+            margin-bottom: 24px;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 500;
+            color: var(--accent);
+        }
+
+        /* ───────── controls ───────── */
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .input-group {
+            flex: 1 1 240px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            background: var(--surface);
+        }
+
+        .btn {
+            padding: 10px 16px;
+            font-size: 0.9rem;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            background: var(--accent);
+            color: #ffffff;
+            transition: opacity 0.2s ease;
+        }
+
+        .btn:hover {
+            opacity: 0.8;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+        }
+
+        .btn-secondary {
+            background: #666666;
+        }
+
+        .btn-danger {
+            background: #c00000;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 0.8rem;
+        }
+
+        /* ───────── tabs ───────── */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .tab {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .tab.active {
+            background: var(--accent);
+            color: #ffffff;
+        }
+
+        /* ───────── lists & cards ───────── */
+        .rss-list,
+        .articles-grid,
+        .stats {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 16px;
+        }
+
+        .rss-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .rss-item:last-child {
+            border-bottom: none;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--muted);
+        }
+
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .article-card {
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 16px;
+            background: var(--surface);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .article-card.unread {
+            border-color: var(--accent);
+        }
+
+        .article-title {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .article-title a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .article-title a:hover {
+            text-decoration: underline;
+        }
+
+        .article-meta {
+            font-size: 0.75rem;
+            color: var(--muted);
+        }
+
+        .article-description {
+            font-size: 0.85rem;
+        }
+
+        .article-actions {
+            margin-top: auto;
+            display: flex;
+            gap: 8px;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            margin-right: 6px;
+            background: var(--muted);
+        }
+
+        .status-unread {
+            background: var(--accent);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 24px;
+            color: var(--muted);
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--accent);
+            color: white;
+            padding: 12px 16px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            z-index: 1000;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s ease;
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .notification.error {
+            background: #c00000;
+        }
+
+        .notification.success {
+            background: #007000;
+        }
+
+        /* ───────── responsive ───────── */
+        @media (max-width: 600px) {
+            .controls {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Minimal RSS Reader</h1>
+        </header>
+
+        <!-- controls -->
+        <div class="controls">
+            <div class="input-group">
+                <input type="url" id="rssUrl" placeholder="Enter RSS feed URL..." value="https://rss.cnn.com/rss/edition.rss">
+            </div>
+            <button class="btn btn-primary" onclick="addRSSFeed()">Add RSS</button>
+            <button class="btn btn-secondary" onclick="refreshFeeds()">Refresh</button>
+            <button class="btn btn-secondary" onclick="markAllAsRead()">Mark All Read</button>
+            <button class="btn btn-secondary" onclick="exportData()">Export Data</button>
+            <button class="btn btn-secondary" onclick="importData()">Import Data</button>
+        </div>
+
+        <!-- stats -->
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="totalFeeds">0</div>
+                <div class="stat-label">RSS Feeds</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="unreadCount">0</div>
+                <div class="stat-label">Unread Articles</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalArticles">0</div>
+                <div class="stat-label">Total Articles</div>
+            </div>
+        </div>
+
+        <!-- tabs -->
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('unread')">Unread</button>
+            <button class="tab" onclick="showTab('all')">All History</button>
+            <button class="tab" onclick="showTab('feeds')">Feed Management</button>
+        </div>
+
+        <!-- feeds management -->
+        <div id="feedsTab" class="rss-list" style="display: none;">
+            <h3 style="margin-bottom: 12px; font-size: 1rem; font-weight: 500;">Registered RSS Feeds</h3>
+            <div id="rssList"></div>
+        </div>
+
+        <!-- unread -->
+        <div id="unreadTab" class="articles-container">
+            <div class="loading" id="loadingUnread">
+                <div class="spinner"></div>
+                Loading unread articles...
+            </div>
+            <div class="articles-grid" id="unreadArticles"></div>
+        </div>
+
+        <!-- all -->
+        <div id="allTab" class="articles-container" style="display: none;">
+            <div class="loading" id="loadingAll">
+                <div class="spinner"></div>
+                Loading all articles...
+            </div>
+            <div class="articles-grid" id="allArticles"></div>
+        </div>
+    </div>
+
+    <!-- Hidden file input for import -->
+    <input type="file" id="importFile" accept=".json" style="display: none;" onchange="handleImportFile(event)">
+
+    <!-- Notification container -->
+    <div id="notification" class="notification"></div>
+
+    <!-- ───────── JavaScript ───────── -->
+    <script>
+        // Data management object
+        let rssData = {
+            feeds: [
+                { id: 1, url: 'https://rss.cnn.com/rss/edition.rss', title: 'CNN RSS' },
+                { id: 2, url: 'https://feeds.bbci.co.uk/news/rss.xml', title: 'BBC News' }
+            ],
+            readArticles: new Set(),
+            allArticles: [],
+            lastUpdated: null
+        };
+
+        let currentTab = 'unread';
+        let nextFeedId = 3;
+        let isLocalStorageAvailable = false;
+
+        // Check if localStorage is available
+        function checkLocalStorage() {
+            try {
+                const test = 'test';
+                localStorage.setItem(test, test);
+                localStorage.removeItem(test);
+                isLocalStorageAvailable = true;
+                return true;
+            } catch (e) {
+                isLocalStorageAvailable = false;
+                return false;
+            }
+        }
+
+        // Show notification
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Save data to localStorage
+        function saveData() {
+            if (!isLocalStorageAvailable) return;
+            
+            try {
+                const dataToSave = {
+                    feeds: rssData.feeds,
+                    readArticles: Array.from(rssData.readArticles),
+                    allArticles: rssData.allArticles,
+                    lastUpdated: rssData.lastUpdated,
+                    nextFeedId: nextFeedId
+                };
+                localStorage.setItem('rssReaderData', JSON.stringify(dataToSave));
+            } catch (error) {
+                console.error('Failed to save data:', error);
+            }
+        }
+
+        // Load data from localStorage
+        function loadData() {
+            if (!isLocalStorageAvailable) return;
+            
+            try {
+                const saved = localStorage.getItem('rssReaderData');
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    rssData.feeds = data.feeds || rssData.feeds;
+                    rssData.readArticles = new Set(data.readArticles || []);
+                    rssData.allArticles = data.allArticles || [];
+                    rssData.lastUpdated = data.lastUpdated ? new Date(data.lastUpdated) : null;
+                    nextFeedId = data.nextFeedId || nextFeedId;
+                }
+            } catch (error) {
+                console.error('Failed to load data:', error);
+            }
+        }
+
+        // Fetch RSS feed using RSS2JSON API
+        async function fetchRSSFeed(url) {
+            try {
+                const proxyUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(url)}`;
+                const response = await fetch(proxyUrl);
+                const data = await response.json();
+
+                if (data.status !== 'ok') {
+                    throw new Error(`Failed to fetch RSS: ${data.message || 'Unknown error'}`);
+                }
+
+                return data.items.map(item => ({
+                    id: `${url}_${item.link}`,
+                    title: item.title,
+                    link: item.link,
+                    pubDate: new Date(item.pubDate),
+                    description: item.description ? item.description.replace(/<[^>]*>/g, '').substring(0, 200) + '...' : '',
+                    feedTitle: data.feed.title,
+                    feedUrl: url
+                }));
+            } catch (error) {
+                console.error('RSS fetch error:', error);
+                showNotification(`Failed to fetch RSS from ${url}: ${error.message}`, 'error');
+                return [];
+            }
+        }
+
+        // Add RSS feed
+        async function addRSSFeed() {
+            const urlInput = document.getElementById('rssUrl');
+            const url = urlInput.value.trim();
+
+            if (!url) {
+                showNotification('Please enter a URL', 'error');
+                return;
+            }
+
+            if (rssData.feeds.some(feed => feed.url === url)) {
+                showNotification('This RSS feed is already registered', 'error');
+                return;
+            }
+
+            // Test fetch to validate RSS
+            showNotification('Validating RSS feed...', 'success');
+            const testArticles = await fetchRSSFeed(url);
+            
+            if (testArticles.length === 0) {
+                showNotification('Invalid RSS feed or no articles found', 'error');
+                return;
+            }
+
+            const newFeed = {
+                id: nextFeedId++,
+                url: url,
+                title: testArticles[0].feedTitle || `RSS Feed ${nextFeedId - 1}`
+            };
+
+            rssData.feeds.push(newFeed);
+            urlInput.value = '';
+
+            saveData();
+            updateRSSList();
+            updateStats();
+            showNotification(`Added RSS feed: ${newFeed.title}`, 'success');
+            
+            // Add new articles to the collection
+            testArticles.forEach(article => {
+                if (!rssData.allArticles.some(existing => existing.id === article.id)) {
+                    rssData.allArticles.push(article);
+                }
+            });
+            
+            rssData.allArticles.sort((a, b) => b.pubDate - a.pubDate);
+            saveData();
+            renderArticles();
+        }
+
+        // Delete RSS feed
+        function deleteFeed(feedId) {
+            const feedToDelete = rssData.feeds.find(feed => feed.id === feedId);
+            if (!feedToDelete) return;
+
+            if (confirm(`Do you want to delete "${feedToDelete.title}"?`)) {
+                rssData.feeds = rssData.feeds.filter(feed => feed.id !== feedId);
+                rssData.allArticles = rssData.allArticles.filter(article =>
+                    rssData.feeds.some(feed => feed.url === article.feedUrl)
+                );
+                
+                saveData();
+                updateRSSList();
+                updateStats();
+                renderArticles();
+                showNotification(`Deleted RSS feed: ${feedToDelete.title}`, 'success');
+            }
+        }
+
+        // Refresh all feeds
+        async function refreshFeeds() {
+            if (rssData.feeds.length === 0) {
+                showNotification('No RSS feeds to refresh', 'error');
+                return;
+            }
+
+            showLoading(true);
+            showNotification('Refreshing all feeds...', 'success');
+
+            const allArticles = [];
+            let successCount = 0;
+
+            for (const feed of rssData.feeds) {
+                const articles = await fetchRSSFeed(feed.url);
+                if (articles.length > 0) {
+                    allArticles.push(...articles);
+                    successCount++;
+                }
+            }
+
+            // Remove duplicates and sort by date
+            const uniqueArticles = allArticles.filter((article, index, self) =>
+                index === self.findIndex(a => a.id === article.id)
+            );
+
+            rssData.allArticles = uniqueArticles.sort((a, b) => b.pubDate - a.pubDate);
+            rssData.lastUpdated = new Date();
+
+            saveData();
+            showLoading(false);
+            updateStats();
+            renderArticles();
+            
+            showNotification(`Refreshed ${successCount}/${rssData.feeds.length} feeds successfully`, 'success');
+        }
+
+        // Mark article as read
+        function markAsRead(articleId) {
+            rssData.readArticles.add(articleId);
+            saveData();
+            updateStats();
+            renderArticles();
+        }
+
+        // Mark all articles as read
+        function markAllAsRead() {
+            if (rssData.allArticles.length === 0) {
+                showNotification('No articles to mark as read', 'error');
+                return;
+            }
+
+            if (confirm('Mark all articles as read?')) {
+                const previousUnread = rssData.allArticles.filter(article => !rssData.readArticles.has(article.id)).length;
+                
+                rssData.allArticles.forEach(article => {
+                    rssData.readArticles.add(article.id);
+                });
+                
+                saveData();
+                updateStats();
+                renderArticles();
+                showNotification(`Marked ${previousUnread} articles as read`, 'success');
+            }
+        }
+
+        // Switch tabs
+        function showTab(tabName) {
+            // Update tab button states
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Switch tab content display
+            document.getElementById('unreadTab').style.display = tabName === 'unread' ? 'block' : 'none';
+            document.getElementById('allTab').style.display = tabName === 'all' ? 'block' : 'none';
+            document.getElementById('feedsTab').style.display = tabName === 'feeds' ? 'block' : 'none';
+
+            currentTab = tabName;
+            renderArticles();
+        }
+
+        // Update RSS list
+        function updateRSSList() {
+            const rssList = document.getElementById('rssList');
+            rssList.innerHTML = '';
+
+            if (rssData.feeds.length === 0) {
+                rssList.innerHTML = '<div class="loading">No RSS feeds registered</div>';
+                return;
+            }
+
+            rssData.feeds.forEach(feed => {
+                const feedElement = document.createElement('div');
+                feedElement.className = 'rss-item';
+                feedElement.innerHTML = `
+                    <div>
+                        <strong>${feed.title}</strong><br>
+                        <small style="color: var(--muted);">${feed.url}</small>
+                    </div>
+                    <button class="btn btn-danger btn-small" onclick="deleteFeed(${feed.id})">Delete</button>
+                `;
+                rssList.appendChild(feedElement);
+            });
+        }
+
+        // Update statistics
+        function updateStats() {
+            const unreadArticles = rssData.allArticles.filter(article => !rssData.readArticles.has(article.id));
+
+            document.getElementById('totalFeeds').textContent = rssData.feeds.length;
+            document.getElementById('unreadCount').textContent = unreadArticles.length;
+            document.getElementById('totalArticles').textContent = rssData.allArticles.length;
+        }
+
+        // Render articles
+        function renderArticles() {
+            const unreadContainer = document.getElementById('unreadArticles');
+            const allContainer = document.getElementById('allArticles');
+
+            if (currentTab === 'unread') {
+                const unreadArticles = rssData.allArticles.filter(article => !rssData.readArticles.has(article.id));
+                renderArticleList(unreadContainer, unreadArticles);
+            } else if (currentTab === 'all') {
+                renderArticleList(allContainer, rssData.allArticles);
+            }
+        }
+
+        // Render article list
+        function renderArticleList(container, articles) {
+            container.innerHTML = '';
+
+            if (articles.length === 0) {
+                container.innerHTML = '<div class="loading">No articles available</div>';
+                return;
+            }
+
+            articles.forEach(article => {
+                const isUnread = !rssData.readArticles.has(article.id);
+                const articleElement = document.createElement('div');
+                articleElement.className = `article-card ${isUnread ? 'unread' : ''}`;
+
+                articleElement.innerHTML = `
+                    <div class="article-title">
+                        <span class="status-indicator ${isUnread ? 'status-unread' : 'status-read'}"></span>
+                        <a href="${article.link}" target="_blank">${article.title}</a>
+                    </div>
+                    <div class="article-meta">
+                        ${article.feedTitle} • ${article.pubDate.toLocaleDateString('en-US')} ${article.pubDate.toLocaleTimeString('en-US', {hour: '2-digit', minute: '2-digit'})}
+                    </div>
+                    <div class="article-description">${article.description}</div>
+                    <div class="article-actions">
+                        ${isUnread ? `<button class="btn btn-primary btn-small" onclick="markAsRead('${article.id}')">Mark as Read</button>` : ''}
+                        <a href="${article.link}" target="_blank" class="btn btn-secondary btn-small">Read Article</a>
+                    </div>
+                `;
+
+                container.appendChild(articleElement);
+            });
+        }
+
+        // Control loading display
+        function showLoading(show) {
+            document.getElementById('loadingUnread').style.display = show ? 'block' : 'none';
+            document.getElementById('loadingAll').style.display = show ? 'block' : 'none';
+            document.getElementById('unreadArticles').style.display = show ? 'none' : 'grid';
+            document.getElementById('allArticles').style.display = show ? 'none' : 'grid';
+        }
+
+        // Export data as JSON
+        function exportData() {
+            const exportData = {
+                feeds: rssData.feeds,
+                readArticles: Array.from(rssData.readArticles),
+                allArticles: rssData.allArticles,
+                lastUpdated: rssData.lastUpdated,
+                exportDate: new Date(),
+                version: '1.0'
+            };
+
+            const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `rss-reader-data-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            showNotification('Data exported successfully', 'success');
+        }
+
+        // Import data from JSON
+        function importData() {
+            document.getElementById('importFile').click();
+        }
+
+        // Handle imported file
+        function handleImportFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    
+                    if (confirm('This will replace all current data. Continue?')) {
+                        rssData.feeds = importedData.feeds || [];
+                        rssData.readArticles = new Set(importedData.readArticles || []);
+                        rssData.allArticles = importedData.allArticles || [];
+                        rssData.lastUpdated = importedData.lastUpdated ? new Date(importedData.lastUpdated) : null;
+                        
+                        // Update nextFeedId to avoid conflicts
+                        nextFeedId = Math.max(...rssData.feeds.map(feed => feed.id), 0) + 1;
+                        
+                        saveData();
+                        updateRSSList();
+                        updateStats();
+                        renderArticles();
+                        
+                        showNotification('Data imported successfully', 'success');
+                    }
+                } catch (error) {
+                    showNotification('Failed to import data: Invalid file format', 'error');
+                }
+            };
+            reader.readAsText(file);
+            
+            // Reset file input
+            event.target.value = '';
+        }
+
+        // Initialize
+        function init() {
+            checkLocalStorage();
+            loadData();
+            updateRSSList();
+            updateStats();
+            
+            if (!isLocalStorageAvailable) {
+                showNotification('localStorage not available - data will not persist after page reload', 'error');
+            }
+            
+            // Auto-refresh on startup if we have feeds
+            if (rssData.feeds.length > 0) {
+                refreshFeeds();
+            }
+        }
+
+        // Initialize when page loads
+        document.addEventListener('DOMContentLoaded', init);
+
+        // Save data before page unload
+        window.addEventListener('beforeunload', saveData);
+
+        // Auto-save every 30 seconds
+        setInterval(saveData, 30000);
+    </script>
+</body>
+</html>

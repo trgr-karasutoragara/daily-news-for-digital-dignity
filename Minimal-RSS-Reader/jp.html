@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimal RSS Reader</title>
+    <style>
+        :root {
+            --bg: #f7f7f7;
+            --surface: #ffffff;
+            --text: #222222;
+            --muted: #777777;
+            --accent: #000000;
+            --border: #e0e0e0;
+            --radius: 12px;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", YuGothic, "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 24px 16px;
+        }
+
+        .header {
+            margin-bottom: 24px;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 500;
+            color: var(--accent);
+        }
+
+        /* ───────── controls ───────── */
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .input-group {
+            flex: 1 1 240px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            background: var(--surface);
+        }
+
+        .btn {
+            padding: 10px 16px;
+            font-size: 0.9rem;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            background: var(--accent);
+            color: #ffffff;
+            transition: opacity 0.2s ease;
+        }
+
+        .btn:hover {
+            opacity: 0.8;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+        }
+
+        .btn-secondary {
+            background: #666666;
+        }
+
+        .btn-danger {
+            background: #c00000;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 0.8rem;
+        }
+
+        /* ───────── tabs ───────── */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .tab {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .tab.active {
+            background: var(--accent);
+            color: #ffffff;
+        }
+
+        /* ───────── lists & cards ───────── */
+        .rss-list,
+        .articles-grid,
+        .stats {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 16px;
+        }
+
+        .rss-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .rss-item:last-child {
+            border-bottom: none;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--muted);
+        }
+
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .article-card {
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 16px;
+            background: var(--surface);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .article-card.unread {
+            border-color: var(--accent);
+        }
+
+        .article-title {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .article-title a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .article-title a:hover {
+            text-decoration: underline;
+        }
+
+        .article-meta {
+            font-size: 0.75rem;
+            color: var(--muted);
+        }
+
+        .article-description {
+            font-size: 0.85rem;
+        }
+
+        .article-actions {
+            margin-top: auto;
+            display: flex;
+            gap: 8px;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            margin-right: 6px;
+            background: var(--muted);
+        }
+
+        .status-unread {
+            background: var(--accent);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 24px;
+            color: var(--muted);
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--accent);
+            color: white;
+            padding: 12px 16px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            z-index: 1000;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s ease;
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .notification.error {
+            background: #c00000;
+        }
+
+        .notification.success {
+            background: #007000;
+        }
+
+        /* ───────── responsive ───────── */
+        @media (max-width: 600px) {
+            .controls {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Minimal RSS Reader</h1>
+        </header>
+
+        <!-- 操作パネル -->
+        <div class="controls">
+            <div class="input-group">
+                <input type="url" id="rssUrl" placeholder="RSSフィードのURLを入力..." value="https://rss.cnn.com/rss/edition.rss">
+            </div>
+            <button class="btn btn-primary" onclick="addRSSFeed()">RSSを追加</button>
+            <button class="btn btn-secondary" onclick="refreshFeeds()">更新</button>
+            <button class="btn btn-secondary" onclick="markAllAsRead()">すべて既読にする</button>
+            <button class="btn btn-secondary" onclick="exportData()">データのエクスポート</button>
+            <button class="btn btn-secondary" onclick="importData()">データのインポート</button>
+        </div>
+
+        <!-- 統計情報 -->
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="totalFeeds">0</div>
+                <div class="stat-label">RSSフィード</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="unreadCount">0</div>
+                <div class="stat-label">未読記事</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalArticles">0</div>
+                <div class="stat-label">総記事数</div>
+            </div>
+        </div>
+
+        <!-- タブ -->
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('unread')">未読</button>
+            <button class="tab" onclick="showTab('all')">全履歴</button>
+            <button class="tab" onclick="showTab('feeds')">フィード管理</button>
+        </div>
+
+        <!-- フィード管理タブ -->
+        <div id="feedsTab" class="rss-list" style="display: none;">
+            <h3 style="margin-bottom: 12px; font-size: 1rem; font-weight: 500;">登録済みRSSフィード</h3>
+            <div id="rssList"></div>
+        </div>
+
+        <!-- 未読タブ -->
+        <div id="unreadTab" class="articles-container">
+            <div class="loading" id="loadingUnread">
+                <div class="spinner"></div>
+                未読記事を読み込み中...
+            </div>
+            <div class="articles-grid" id="unreadArticles"></div>
+        </div>
+
+        <!-- 全履歴タブ -->
+        <div id="allTab" class="articles-container" style="display: none;">
+            <div class="loading" id="loadingAll">
+                <div class="spinner"></div>
+                すべての記事を読み込み中...
+            </div>
+            <div class="articles-grid" id="allArticles"></div>
+        </div>
+    </div>
+
+    <!-- インポート用の隠しファイル入力 -->
+    <input type="file" id="importFile" accept=".json" style="display: none;" onchange="handleImportFile(event)">
+
+    <!-- 通知コンテナ -->
+    <div id="notification" class="notification"></div>
+
+    <!-- ───────── JavaScript ───────── -->
+    <script>
+        // データ管理オブジェクト
+        let rssData = {
+            feeds: [
+                { id: 1, url: 'https://rss.cnn.com/rss/edition.rss', title: 'CNN RSS' },
+                { id: 2, url: 'https://feeds.bbci.co.uk/news/rss.xml', title: 'BBC News' }
+            ],
+            readArticles: new Set(),
+            allArticles: [],
+            lastUpdated: null
+        };
+
+        let currentTab = 'unread';
+        let nextFeedId = 3;
+        let isLocalStorageAvailable = false;
+
+        // localStorageが利用可能かチェック
+        function checkLocalStorage() {
+            try {
+                const test = 'test';
+                localStorage.setItem(test, test);
+                localStorage.removeItem(test);
+                isLocalStorageAvailable = true;
+                return true;
+            } catch (e) {
+                isLocalStorageAvailable = false;
+                return false;
+            }
+        }
+
+        // 通知を表示
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // localStorageにデータを保存
+        function saveData() {
+            if (!isLocalStorageAvailable) return;
+            
+            try {
+                const dataToSave = {
+                    feeds: rssData.feeds,
+                    readArticles: Array.from(rssData.readArticles),
+                    allArticles: rssData.allArticles,
+                    lastUpdated: rssData.lastUpdated,
+                    nextFeedId: nextFeedId
+                };
+                localStorage.setItem('rssReaderData', JSON.stringify(dataToSave));
+            } catch (error) {
+                console.error('データの保存に失敗しました:', error);
+            }
+        }
+
+        // localStorageからデータを読み込み
+        function loadData() {
+            if (!isLocalStorageAvailable) return;
+            
+            try {
+                const saved = localStorage.getItem('rssReaderData');
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    rssData.feeds = data.feeds || rssData.feeds;
+                    rssData.readArticles = new Set(data.readArticles || []);
+                    rssData.allArticles = data.allArticles || [];
+                    rssData.lastUpdated = data.lastUpdated ? new Date(data.lastUpdated) : null;
+                    nextFeedId = data.nextFeedId || nextFeedId;
+                }
+            } catch (error) {
+                console.error('データの読み込みに失敗しました:', error);
+            }
+        }
+
+        // RSS2JSON APIを使用してRSSフィードを取得
+        async function fetchRSSFeed(url) {
+            try {
+                const proxyUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(url)}`;
+                const response = await fetch(proxyUrl);
+                const data = await response.json();
+
+                if (data.status !== 'ok') {
+                    throw new Error(`RSSの取得に失敗しました: ${data.message || '不明なエラー'}`);
+                }
+
+                return data.items.map(item => ({
+                    id: `${url}_${item.link}`,
+                    title: item.title,
+                    link: item.link,
+                    pubDate: new Date(item.pubDate),
+                    description: item.description ? item.description.replace(/<[^>]*>/g, '').substring(0, 200) + '...' : '',
+                    feedTitle: data.feed.title,
+                    feedUrl: url
+                }));
+            } catch (error) {
+                console.error('RSS取得エラー:', error);
+                showNotification(`${url} からのRSS取得に失敗しました: ${error.message}`, 'error');
+                return [];
+            }
+        }
+
+        // RSSフィードを追加
+        async function addRSSFeed() {
+            const urlInput = document.getElementById('rssUrl');
+            const url = urlInput.value.trim();
+
+            if (!url) {
+                showNotification('URLを入力してください', 'error');
+                return;
+            }
+
+            if (rssData.feeds.some(feed => feed.url === url)) {
+                showNotification('このRSSフィードはすでに登録されています', 'error');
+                return;
+            }
+
+            // RSS検証のためのテスト取得
+            showNotification('RSSフィードを検証中...', 'success');
+            const testArticles = await fetchRSSFeed(url);
+            
+            if (testArticles.length === 0) {
+                showNotification('無効なRSSフィード、または記事が見つかりませんでした', 'error');
+                return;
+            }
+
+            const newFeed = {
+                id: nextFeedId++,
+                url: url,
+                title: testArticles[0].feedTitle || `RSSフィード ${nextFeedId - 1}`
+            };
+
+            rssData.feeds.push(newFeed);
+            urlInput.value = '';
+
+            saveData();
+            updateRSSList();
+            updateStats();
+            showNotification(`RSSフィードを追加しました: ${newFeed.title}`, 'success');
+            
+            // 新しい記事をコレクションに追加
+            testArticles.forEach(article => {
+                if (!rssData.allArticles.some(existing => existing.id === article.id)) {
+                    rssData.allArticles.push(article);
+                }
+            });
+            
+            rssData.allArticles.sort((a, b) => b.pubDate - a.pubDate);
+            saveData();
+            renderArticles();
+        }
+
+        // RSSフィードを削除
+        function deleteFeed(feedId) {
+            const feedToDelete = rssData.feeds.find(feed => feed.id === feedId);
+            if (!feedToDelete) return;
+
+            if (confirm(`"${feedToDelete.title}" を削除しますか？`)) {
+                rssData.feeds = rssData.feeds.filter(feed => feed.id !== feedId);
+                rssData.allArticles = rssData.allArticles.filter(article =>
+                    rssData.feeds.some(feed => feed.url === article.feedUrl)
+                );
+                
+                saveData();
+                updateRSSList();
+                updateStats();
+                renderArticles();
+                showNotification(`RSSフィードを削除しました: ${feedToDelete.title}`, 'success');
+            }
+        }
+
+        // 全てのフィードを更新
+        async function refreshFeeds() {
+            if (rssData.feeds.length === 0) {
+                showNotification('更新するRSSフィードがありません', 'error');
+                return;
+            }
+
+            showLoading(true);
+            showNotification('すべてのフィードを更新中...', 'success');
+
+            const allArticles = [];
+            let successCount = 0;
+
+            for (const feed of rssData.feeds) {
+                const articles = await fetchRSSFeed(feed.url);
+                if (articles.length > 0) {
+                    allArticles.push(...articles);
+                    successCount++;
+                }
+            }
+
+            // 重複を削除し、日付でソート
+            const uniqueArticles = allArticles.filter((article, index, self) =>
+                index === self.findIndex(a => a.id === article.id)
+            );
+
+            rssData.allArticles = uniqueArticles.sort((a, b) => b.pubDate - a.pubDate);
+            rssData.lastUpdated = new Date();
+
+            saveData();
+            showLoading(false);
+            updateStats();
+            renderArticles();
+            
+            showNotification(`${successCount}/${rssData.feeds.length} 件のフィードを正常に更新しました`, 'success');
+        }
+
+        // 記事を既読にする
+        function markAsRead(articleId) {
+            rssData.readArticles.add(articleId);
+            saveData();
+            updateStats();
+            renderArticles();
+        }
+
+        // すべての記事を既読にする
+        function markAllAsRead() {
+            if (rssData.allArticles.length === 0) {
+                showNotification('既読にする記事がありません', 'error');
+                return;
+            }
+
+            if (confirm('すべての記事を既読にしますか？')) {
+                const previousUnread = rssData.allArticles.filter(article => !rssData.readArticles.has(article.id)).length;
+                
+                rssData.allArticles.forEach(article => {
+                    rssData.readArticles.add(article.id);
+                });
+                
+                saveData();
+                updateStats();
+                renderArticles();
+                showNotification(`${previousUnread} 件の記事を既読にしました`, 'success');
+            }
+        }
+
+        // タブを切り替え
+        function showTab(tabName) {
+            // タブボタンの状態を更新
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // タブコンテンツの表示を切り替え
+            document.getElementById('unreadTab').style.display = tabName === 'unread' ? 'block' : 'none';
+            document.getElementById('allTab').style.display = tabName === 'all' ? 'block' : 'none';
+            document.getElementById('feedsTab').style.display = tabName === 'feeds' ? 'block' : 'none';
+
+            currentTab = tabName;
+            renderArticles();
+        }
+
+        // RSSリストを更新
+        function updateRSSList() {
+            const rssList = document.getElementById('rssList');
+            rssList.innerHTML = '';
+
+            if (rssData.feeds.length === 0) {
+                rssList.innerHTML = '<div class="loading">登録済みのRSSフィードはありません</div>';
+                return;
+            }
+
+            rssData.feeds.forEach(feed => {
+                const feedElement = document.createElement('div');
+                feedElement.className = 'rss-item';
+                feedElement.innerHTML = `
+                    <div>
+                        <strong>${feed.title}</strong><br>
+                        <small style="color: var(--muted);">${feed.url}</small>
+                    </div>
+                    <button class="btn btn-danger btn-small" onclick="deleteFeed(${feed.id})">削除</button>
+                `;
+                rssList.appendChild(feedElement);
+            });
+        }
+
+        // 統計情報を更新
+        function updateStats() {
+            const unreadArticles = rssData.allArticles.filter(article => !rssData.readArticles.has(article.id));
+
+            document.getElementById('totalFeeds').textContent = rssData.feeds.length;
+            document.getElementById('unreadCount').textContent = unreadArticles.length;
+            document.getElementById('totalArticles').textContent = rssData.allArticles.length;
+        }
+
+        // 記事を描画
+        function renderArticles() {
+            const unreadContainer = document.getElementById('unreadArticles');
+            const allContainer = document.getElementById('allArticles');
+
+            if (currentTab === 'unread') {
+                const unreadArticles = rssData.allArticles.filter(article => !rssData.readArticles.has(article.id));
+                renderArticleList(unreadContainer, unreadArticles);
+            } else if (currentTab === 'all') {
+                renderArticleList(allContainer, rssData.allArticles);
+            }
+        }
+
+        // 記事リストを描画
+        function renderArticleList(container, articles) {
+            container.innerHTML = '';
+
+            if (articles.length === 0) {
+                container.innerHTML = '<div class="loading">利用可能な記事はありません</div>';
+                return;
+            }
+
+            articles.forEach(article => {
+                const isUnread = !rssData.readArticles.has(article.id);
+                const articleElement = document.createElement('div');
+                articleElement.className = `article-card ${isUnread ? 'unread' : ''}`;
+
+                articleElement.innerHTML = `
+                    <div class="article-title">
+                        <span class="status-indicator ${isUnread ? 'status-unread' : 'status-read'}"></span>
+                        <a href="${article.link}" target="_blank">${article.title}</a>
+                    </div>
+                    <div class="article-meta">
+                        ${article.feedTitle} • ${article.pubDate.toLocaleDateString('ja-JP')} ${article.pubDate.toLocaleTimeString('ja-JP', {hour: '2-digit', minute: '2-digit'})}
+                    </div>
+                    <div class="article-description">${article.description}</div>
+                    <div class="article-actions">
+                        ${isUnread ? `<button class="btn btn-primary btn-small" onclick="markAsRead('${article.id}')">既読にする</button>` : ''}
+                        <a href="${article.link}" target="_blank" class="btn btn-secondary btn-small">記事を読む</a>
+                    </div>
+                `;
+
+                container.appendChild(articleElement);
+            });
+        }
+
+        // ローディング表示を制御
+        function showLoading(show) {
+            document.getElementById('loadingUnread').style.display = show ? 'block' : 'none';
+            document.getElementById('loadingAll').style.display = show ? 'block' : 'none';
+            document.getElementById('unreadArticles').style.display = show ? 'none' : 'grid';
+            document.getElementById('allArticles').style.display = show ? 'none' : 'grid';
+        }
+
+        // データをJSONとしてエクスポート
+        function exportData() {
+            const exportData = {
+                feeds: rssData.feeds,
+                readArticles: Array.from(rssData.readArticles),
+                allArticles: rssData.allArticles,
+                lastUpdated: rssData.lastUpdated,
+                exportDate: new Date(),
+                version: '1.0'
+            };
+
+            const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `rss-reader-data-${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            showNotification('データを正常にエクスポートしました', 'success');
+        }
+
+        // JSONからデータをインポート
+        function importData() {
+            document.getElementById('importFile').click();
+        }
+
+        // インポートされたファイルを処理
+        function handleImportFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    
+                    if (confirm('これにより現在のデータがすべて置き換えられます。続行しますか？')) {
+                        rssData.feeds = importedData.feeds || [];
+                        rssData.readArticles = new Set(importedData.readArticles || []);
+                        rssData.allArticles = importedData.allArticles || [];
+                        rssData.lastUpdated = importedData.lastUpdated ? new Date(importedData.lastUpdated) : null;
+                        
+                        // IDの競合を避けるためにnextFeedIdを更新
+                        nextFeedId = Math.max(...rssData.feeds.map(feed => feed.id), 0) + 1;
+                        
+                        saveData();
+                        updateRSSList();
+                        updateStats();
+                        renderArticles();
+                        
+                        showNotification('データを正常にインポートしました', 'success');
+                    }
+                } catch (error) {
+                    showNotification('データのインポートに失敗しました: 無効なファイル形式です', 'error');
+                }
+            };
+            reader.readAsText(file);
+            
+            // ファイル入力をリセット
+            event.target.value = '';
+        }
+
+        // 初期化
+        function init() {
+            checkLocalStorage();
+            loadData();
+            updateRSSList();
+            updateStats();
+            
+            if (!isLocalStorageAvailable) {
+                showNotification('localStorageが利用できません - ページを再読み込みするとデータは失われます', 'error');
+            }
+            
+            // フィードがあれば起動時に自動更新
+            if (rssData.feeds.length > 0) {
+                refreshFeeds();
+            }
+        }
+
+        // ページ読み込み時に初期化
+        document.addEventListener('DOMContentLoaded', init);
+
+        // ページを閉じる前にデータを保存
+        window.addEventListener('beforeunload', saveData);
+
+        // 30秒ごとに自動保存
+        setInterval(saveData, 30000);
+    </script>
+</body>
+</html>
