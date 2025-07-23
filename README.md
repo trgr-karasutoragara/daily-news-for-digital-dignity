@@ -2,6 +2,27 @@
 ![Stars](https://img.shields.io/github/stars/trgr-karasutoragara/daily-news-for-digital-dignity?style=social)
 ![Last Commit](https://img.shields.io/github/last-commit/trgr-karasutoragara/daily-news-for-digital-dignity)
 
+
+# Simple Your Private Memo
+A local tool designed for mouse-centric browsing and information literacy education for elderly users. Implemented as a single Python file with no external server communication, including cloud services.
+
+[Read more →](https://github.com/trgr-karasutoragara/daily-news-for-digital-dignity/blob/main/symp/README.md)
+
+<br>
+
+# Minimal-RSS-Reader
+
+This is Minimal-RSS-Reader, a single static file that lets you manage around 50 RSS feeds.
+
+[Read more →](https://github.com/trgr-karasutoragara/daily-news-for-digital-dignity/tree/main/Minimal-RSS-Reader)
+
+<br>
+
+
+
+
+
+
 # Status: Superseded
 This project has an enhanced version available. We recommend checking out the improved implementation for better performance and additional features.
 
@@ -91,14 +112,6 @@ https://github.com/trgr-karasutoragara/trgr-karasutoragara.github.io
 
 ---
 
-# Simple Your Private Memo
-A local tool designed for mouse-centric browsing and information literacy education for elderly users. Implemented as a single Python file with no external server communication, including cloud services.
-
-[Read more →](https://github.com/trgr-karasutoragara/daily-news-for-digital-dignity/blob/main/symp/README.md)
-
-<br>
-
----
 
 <br>
 
