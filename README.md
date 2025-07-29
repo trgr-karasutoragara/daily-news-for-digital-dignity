@@ -19,10 +19,6 @@ This is Minimal-RSS-Reader, a single static file that lets you manage around 50 
 <br>
 
 
-
-
-
-
 # Status: Superseded
 This project has an enhanced version available. We recommend checking out the improved implementation for better performance and additional features.
 
@@ -117,6 +113,15 @@ https://github.com/trgr-karasutoragara/trgr-karasutoragara.github.io
 
 ## License
 MIT License
+
+<br>
+
+## Repository Policy
+
+- I develop prototypes with a focus on ethics.
+- There are no plans for maintenance or support.
+- The project is released under the MIT License, so feel free to modify it within the scope of the license.
+- Instead of providing support, I create new prototypes to solve emerging problems.
 
 <br>
 
